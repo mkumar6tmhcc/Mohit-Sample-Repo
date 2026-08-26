@@ -1,0 +1,37 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+  
+variables:
+  workingDirectory: '$(System.DefaultWorkingDirectory)'
+  
+steps: 
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '11'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
+    jdkDestinationDirectory: '$(Agent.ToolsDirectory)/jdk'
+  displayName: 'Set up JDK 11'
+  
+- script: |
+    echo "Current Working directory is: "$(workingDirectory)
+    echo "##vso[task.setvariable variable=workingDirectory]$(workingDirectory)"
+    setx WORKING_DIRECTORY $(workingDirectory)
+  displayName: 'Print Working Directory'
+
+- task: katalonTask@1
+  inputs:
+    version: '11.4.0'
+    executeArgs: '-retry=0 -testSuitePath="Test Suites/TS004" -browserType="Chrome" -executionProfile="default" -apiKey="40c1dfe9-1538-4c7d-b86d-d142c4fc5fd3" --config -proxy.auth.option=NO_PROXY -proxy.system.option=NO_PROXY -proxy.system.applyToDesiredCapabilities=true -webui.autoUpdateDrivers=true -ai.provider="katalon_ai"'
+  env:
+    JAVA_HOME: $(agent.toolsDirectory)/jdk
+    WORKING_DIRECTORY: $(workingDirectory)
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(workingDirectory)'
+    ArtifactName: 'Katalon'
+  displayName: 'Publish Build Artifacts'
