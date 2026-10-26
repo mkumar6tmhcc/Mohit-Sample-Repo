@@ -24,7 +24,7 @@ steps:
 
 - task: katalonTask@1
   inputs:
-    version: '11.4.0'
+    version: '11.5.0'
     executeArgs: '-retry=0 -testSuitePath="Test Suites/TS002" -browserType="Chrome" -executionProfile="default" -apiKey="40c1dfe9-1538-4c7d-b86d-d142c4fc5fd3" -testOpsProjectId=3553108 --config -proxy.auth.option=NO_PROXY -proxy.system.option=NO_PROXY -proxy.system.applyToDesiredCapabilities=true -webui.autoUpdateDrivers=true -ai.provider="katalon_ai"'
   env:
     JAVA_HOME: $(agent.toolsDirectory)/jdk
