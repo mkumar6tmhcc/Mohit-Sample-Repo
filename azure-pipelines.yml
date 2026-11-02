@@ -22,6 +22,7 @@ steps:
     setx WORKING_DIRECTORY $(workingDirectory)
   displayName: 'Print Working Directory'
 
+
 - task: katalonTask@1
   inputs:
     version: '11.5.0'
